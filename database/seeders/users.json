@@ -1,0 +1,20 @@
+[
+    {
+        "first_name" : "حمید",
+        "last_name" : "کیانی",
+        "email" : "hamid@gmail.com",
+        "password" : "123456",
+        "gender" : "MALE",
+        "mobile" : "09194077362",
+        "phone" : "02188558855"
+    },
+    {
+        "first_name" : "Matin",
+        "last_name" : "Lahijani",
+        "email" : "matin@gmail.com",
+        "password" : "123456",
+        "gender" : "MALE",
+        "mobile" : "09194077363",
+        "phone" : "02188558855"
+    }
+]
