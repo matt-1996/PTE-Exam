@@ -283,7 +283,9 @@
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon @click="recordAudio()" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="start" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="stop" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="play" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
                     </div>
                 </v-col>
@@ -329,11 +331,55 @@ import { onMounted } from 'vue';
         })
     }
 
+      const startButton = document.getElementById('start');
+      const stopButton = document.getElementById('stop');
+      const playButton = document.getElementById('play');
+      let output = document.getElementById('output');
+      let audioRecorder;
+      let audioChunks = [];
+      navigator.mediaDevices.getUserMedia({ audio: true })
+         .then(stream => {
+
+            // Initialize the media recorder object
+            audioRecorder = new MediaRecorder(stream);
+
+            // dataavailable event is fired when the recording is stopped
+            audioRecorder.addEventListener('dataavailable', e => {
+               audioChunks.push(e.data);
+            });
+
+            // start recording when the start button is clicked
+            startButton.addEventListener('click', () => {
+               audioChunks = [];
+               audioRecorder.start();
+               output.innerHTML = 'Recording started! Speak now.';
+            });
+
+            // stop recording when the stop button is clicked
+            stopButton.addEventListener('click', () => {
+               audioRecorder.stop();
+               output.innerHTML = 'Recording stopped! Click on the play button to play the recorded audio.';
+            });
+
+            // play the recorded audio when the play button is clicked
+            playButton.addEventListener('click', () => {
+               const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+               const audioUrl = URL.createObjectURL(blobObj);
+               const audio = new Audio(audioUrl);
+               audio.play();
+               output.innerHTML = 'Playing the recorded audio!';
+            });
+         }).catch(err => {
+
+            // If the user denies permission to record audio, then display an error.
+            console.log('Error: ' + err);
+         });
+
     function recordAudio() {
       var device = navigator.mediaDevices.getUserMedia({ audio: true });
       device.then((stream) => {
         // use this!
-        const recorder = new MediaRecorder(stream);
+        recorder = new MediaRecorder(stream);
         mediaRecorder.start();
         const audioChunks = [];
         this.recorder.ondataavailable = (e) => {
