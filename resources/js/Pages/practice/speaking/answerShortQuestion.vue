@@ -333,7 +333,7 @@ import { onMounted } from 'vue';
       var device = navigator.mediaDevices.getUserMedia({ audio: true });
       device.then((stream) => {
         // use this!
-        this.recorder = new MediaRecorder(stream);
+        const recorder = new MediaRecorder(stream);
         mediaRecorder.start();
         const audioChunks = [];
         this.recorder.ondataavailable = (e) => {
