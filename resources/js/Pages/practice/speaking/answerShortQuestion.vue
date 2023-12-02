@@ -283,7 +283,7 @@
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon id="start" @click="startRecording()" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="start"  class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="stop" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="play" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
