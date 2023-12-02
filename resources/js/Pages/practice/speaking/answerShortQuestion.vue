@@ -389,7 +389,10 @@ import { onMounted } from 'vue';
         })
 
         // Stop event
-
+        stop.addEventListener('click', function (ev) {
+          mediaRecorder.stop();
+          // console.log(mediaRecorder.state);
+        });
 
         // If audio data available then push
         // it to the chunk array
@@ -428,10 +431,7 @@ import { onMounted } from 'vue';
         console.log(err.name, err.message);
       });
       }
-      stop.addEventListener('click', function (ev) {
-          mediaRecorder.stop();
-          // console.log(mediaRecorder.state);
-        });
+
 
     function recordAudio() {
       var device = navigator.mediaDevices.getUserMedia({ audio: true });
