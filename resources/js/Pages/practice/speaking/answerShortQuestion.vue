@@ -422,6 +422,7 @@ import { onMounted } from 'vue';
 
           // Pass the audio url to the 2nd video tag
           playAudio.src = audioSrc;
+          console.log(audioSrc)
         }
       })
 
