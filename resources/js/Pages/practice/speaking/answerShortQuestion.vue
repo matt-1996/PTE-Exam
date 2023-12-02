@@ -283,7 +283,7 @@
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon id="start" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="start" @click="startRecording()" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="stop" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="play" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
@@ -337,7 +337,9 @@ import { onMounted } from 'vue';
       let output = document.getElementById('output');
       let audioRecorder;
       let audioChunks = [];
-      navigator.mediaDevices.getUserMedia({ audio: true })
+      function startRecording()
+      {
+        navigator.mediaDevices.getUserMedia({ audio: true })
          .then(stream => {
 
             // Initialize the media recorder object
@@ -374,6 +376,8 @@ import { onMounted } from 'vue';
             // If the user denies permission to record audio, then display an error.
             console.log('Error: ' + err);
          });
+      }
+
 
     function recordAudio() {
       var device = navigator.mediaDevices.getUserMedia({ audio: true });
