@@ -283,7 +283,7 @@
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon id="start"  class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon id="start" @click="startRecording()" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="stop" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                             <v-icon id="play" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
@@ -301,7 +301,40 @@ import axios from 'axios';
 import { ref } from 'vue'
 import { onMounted } from 'vue';
 
-let audioIN = { audio: true };
+
+    const prepare = ref(true)
+    const timer = ref(false)
+    const drawer = ref(false)
+    const dropDownPracticeToggle = ref(false)
+    const dropDownToggle = ref(false)
+    const answerShortQuestions = ref(0);
+    const links = ref(0)
+    const publicPath = ref('../../../../../')
+    defineProps({ answerShortQuestion : Object })
+
+    function onPrepareEnd()
+    {
+        console.log("Counter Ended")
+        prepare.value = false
+        timer.value = true
+
+    }
+
+    function getPaginateData(url)
+    {
+        // console.log(url)
+        axios.get(url).then(function(res){
+            answerShortQuestions.value = res.data.message.data
+            drawer.value = true
+            links.value = res.data.message.links
+            console.log(links)
+        })
+    }
+
+
+      function startRecording()
+      {
+        let audioIN = { audio: true };
     //  audio is true, for recording
 
     // Access the permission for use
@@ -339,10 +372,10 @@ let audioIN = { audio: true };
         let start = document.getElementById('btnStart');
 
         // Stop record
-        let stop = document.getElementById('btnStop');
+        let stop = document.getElementById('stop');
 
         // 2nd audio tag for play the audio
-        let playAudio = document.getElementById('adioPlay');
+        let playAudio = document.getElementById('paly');
 
         // This is the main thing to recorded
         // the audio 'MediaRecorder' API
@@ -396,81 +429,6 @@ let audioIN = { audio: true };
       .catch(function (err) {
         console.log(err.name, err.message);
       });
-    const prepare = ref(true)
-    const timer = ref(false)
-    const drawer = ref(false)
-    const dropDownPracticeToggle = ref(false)
-    const dropDownToggle = ref(false)
-    const answerShortQuestions = ref(0);
-    const links = ref(0)
-    const publicPath = ref('../../../../../')
-    defineProps({ answerShortQuestion : Object })
-
-    function onPrepareEnd()
-    {
-        console.log("Counter Ended")
-        prepare.value = false
-        timer.value = true
-
-    }
-
-    function getPaginateData(url)
-    {
-        // console.log(url)
-        axios.get(url).then(function(res){
-            answerShortQuestions.value = res.data.message.data
-            drawer.value = true
-            links.value = res.data.message.links
-            console.log(links)
-        })
-    }
-
-
-      function startRecording()
-      {
-        const startButton = document.getElementById('start');
-        const stopButton = document.getElementById('stop');
-        const playButton = document.getElementById('play');
-        let output = document.getElementById('output');
-        let audioRecorder;
-        let audioChunks = [];
-        navigator.mediaDevices.getUserMedia({ audio: true })
-         .then(stream => {
-
-            // Initialize the media recorder object
-            audioRecorder = new MediaRecorder(stream);
-
-            // dataavailable event is fired when the recording is stopped
-            audioRecorder.addEventListener('dataavailable', e => {
-               audioChunks.push(e.data);
-            });
-
-            // start recording when the start button is clicked
-            // startButton.addEventListener('click', () => {
-            //    audioChunks = [];
-            //    audioRecorder.start();
-            //    output.innerHTML = 'Recording started! Speak now.';
-            // });
-
-            // stop recording when the stop button is clicked
-            stopButton.addEventListener('click', () => {
-               audioRecorder.stop();
-               output.innerHTML = 'Recording stopped! Click on the play button to play the recorded audio.';
-            });
-
-            // play the recorded audio when the play button is clicked
-            playButton.addEventListener('click', () => {
-               const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
-               const audioUrl = URL.createObjectURL(blobObj);
-               const audio = new Audio(audioUrl);
-               audio.play();
-               output.innerHTML = 'Playing the recorded audio!';
-            });
-         }).catch(err => {
-
-            // If the user denies permission to record audio, then display an error.
-            console.log('Error: ' + err);
-         });
       }
 
 
