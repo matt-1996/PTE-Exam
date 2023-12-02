@@ -331,14 +331,15 @@ import { onMounted } from 'vue';
         })
     }
 
-      const startButton = document.getElementById('start');
-      const stopButton = document.getElementById('stop');
-      const playButton = document.getElementById('play');
-      let output = document.getElementById('output');
-      let audioRecorder;
-      let audioChunks = [];
+
       function startRecording()
       {
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const playButton = document.getElementById('play');
+        let output = document.getElementById('output');
+        let audioRecorder;
+        let audioChunks = [];
         navigator.mediaDevices.getUserMedia({ audio: true })
          .then(stream => {
 
