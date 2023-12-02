@@ -352,11 +352,11 @@ import { onMounted } from 'vue';
             });
 
             // start recording when the start button is clicked
-            startButton.addEventListener('click', () => {
-               audioChunks = [];
-               audioRecorder.start();
-               output.innerHTML = 'Recording started! Speak now.';
-            });
+            // startButton.addEventListener('click', () => {
+            //    audioChunks = [];
+            //    audioRecorder.start();
+            //    output.innerHTML = 'Recording started! Speak now.';
+            // });
 
             // stop recording when the stop button is clicked
             stopButton.addEventListener('click', () => {
