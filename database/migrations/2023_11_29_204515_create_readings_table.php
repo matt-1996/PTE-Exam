@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('code');
             $table->string('title');
             $table->text('context');
+            $table->integer('duration');
             $table->timestamps();
         });
     }
