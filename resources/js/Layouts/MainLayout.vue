@@ -64,35 +64,35 @@
             <ul>
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Speaking</span>
                 <li>
-                    <Link :href="route('prctice.readAloud' , '1')" class="block p-3  ">
+                    <Link :href="route('prctice.readAloud' , '8')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Read Aloud
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
                     </Link>
                 </li>
                 <li>
-                    <Link :href="route('practice.repeat.sentence.show' , '1')" class="block p-3  ">
+                    <Link :href="route('practice.repeat.sentence.show' , '3')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Repeat Sentence
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
                     </Link>
                 </li>
                 <li>
-                    <Link :href="route('practice.DescribeImage.show' , '1')" class="block p-3  ">
+                    <Link :href="route('practice.DescribeImage.show' , '5')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Describe Image
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
                     </Link>
                 </li>
                 <li>
-                    <Link :href="route('practice.retellLecture.show' , '1')" class="block p-3  ">
+                    <Link :href="route('practice.retellLecture.show' , '6')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Re-tell Lecture
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
                     </Link>
                 </li>
                 <li>
-                    <Link :href="route('practice.answerShortQuestion.show' , '1')" class="block p-3  ">
+                    <Link :href="route('practice.answerShortQuestion.show' , '7')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Answer Short Questions
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
@@ -103,14 +103,14 @@
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Writing
                 </span>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.summarizeWrittenText.show' , '10')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Summarize Written Text
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.writeEssays.show' , '11')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Write Essay
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
