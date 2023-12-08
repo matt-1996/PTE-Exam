@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('re_order_paragraphs', function (Blueprint $table) {
+        Schema::create('quize_collections', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->unsignedBigInteger('paragraph_id');
-            $table->foreign('paragraph_id')->references('id')->on('paragraphs')->onDelete('cascade');
-            $table->string('code', 100);
-            $table->integer('duration');
+            $table->unsignedBigInteger('practice_id');
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('re_order_paragraphs');
+        Schema::dropIfExists('quize_collections');
     }
 };

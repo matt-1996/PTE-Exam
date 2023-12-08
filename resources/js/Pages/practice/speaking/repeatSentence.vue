@@ -252,7 +252,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <vue-countdown v-if="prepare" :time=" 1 * repeatSentence.duration * 1000" v-slot="{ minutes,seconds }" @end="onPrepareEnd">
+                <vue-countdown v-if="prepare" :time=" 1 * repeatSentence.duration * 1000" v-slot="{ minutes,seconds }" @end="onPrepareEnd(repeatSentence.duration)">
                     <div class="text-red-400">Prepare: 0{{ minutes }}:{{ seconds }}</div>
                 </vue-countdown>
 
@@ -262,11 +262,19 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <audio controls >
-                        <!-- <source src="horse.ogg" type="audio/ogg"> -->
-                        <source :src="publicPath + repeatSentence.audio_path" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                        </audio>
+
+                   <audio v-if="showAudioPlayer" :src="AudioUrl" controls></audio>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <source src="horse.ogg" type="audio/ogg"> -->
+                    <div v-for="file in files" :key="file.id">
+                        <audio controls >
+                            <source :src="publicPath + file.audio_path" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                            </audio>
+                        </div>
                 </v-col>
             </v-row>
             <v-row>
@@ -283,7 +291,7 @@
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon @click="recordAudio()" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon @click="record(repeatSentence.duration)" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
                     </div>
                 </v-col>
@@ -299,6 +307,65 @@ import axios from 'axios';
 import { ref } from 'vue'
 import { onMounted } from 'vue';
 
+    function record(timeToRecord)
+    {
+    const TimetoRecordinMiliSecond = timeToRecord * 1000
+    const TimetoPlayinMiliSecond = TimetoRecordinMiliSecond + 1000
+      let audioRecorder;
+      let audioChunks = [];
+      navigator.mediaDevices.getUserMedia({ audio: true })
+         .then(stream => {
+
+            // Initialize the media recorder object
+            audioRecorder = new MediaRecorder(stream);
+
+            // dataavailable event is fired when the recording is stopped
+            audioRecorder.addEventListener('dataavailable', e => {
+               audioChunks.push(e.data);
+            });
+
+            audioChunks = [];
+               audioRecorder.start();
+               console.log('Recording started! Speak now.');
+
+            setTimeout(() => {
+                audioRecorder.stop();
+                var audio = new Audio('../../../../../sounds/beep.wav');
+                audio.play();
+               console.log('Recording stopped! Click on the play button to play the recorded audio.')
+            }, TimetoRecordinMiliSecond );
+
+            setTimeout(() => {
+                const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+               const audioUrl = URL.createObjectURL(blobObj);
+               const audio = new Audio(audioUrl);
+            //    audio.play();
+               console.log('Playing the recorded audio!');
+               console.log(audioUrl)
+               AudioUrl.value = audioUrl
+               showAudioPlayer.value = true
+            }, TimetoPlayinMiliSecond);
+
+            // stop recording when the stop button is clicked
+            // stopButton.addEventListener('click', () => {
+            //    audioRecorder.stop();
+            //    output.innerHTML = 'Recording stopped! Click on the play button to play the recorded audio.';
+            // });
+
+            // play the recorded audio when the play button is clicked
+            playButton.addEventListener('click', () => {
+               const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+               const audioUrl = URL.createObjectURL(blobObj);
+               const audio = new Audio(audioUrl);
+               audio.play();
+               output.innerHTML = 'Playing the recorded audio!';
+            });
+         }).catch(err => {
+
+            // If the user denies permission to record audio, then display an error.
+            console.log('Error: ' + err);
+         });
+    }
 
     const prepare = ref(true)
     const timer = ref(false)
@@ -307,14 +374,19 @@ import { onMounted } from 'vue';
     const dropDownToggle = ref(false)
     const RepeatSentences = ref(0);
     const links = ref(0)
+    const AudioUrl = ref()
+    const showAudioPlayer = ref(false)
     const publicPath = ref('../../../../../')
-    defineProps({ repeatSentence : Object })
+    defineProps({ repeatSentence : Object , files: Object})
 
-    function onPrepareEnd()
+    function onPrepareEnd(timeToRecord)
     {
         console.log("Counter Ended")
         prepare.value = false
         timer.value = true
+        var audio = new Audio('../../../../../sounds/beep.wav');
+        audio.play();
+        record(timeToRecord)
 
     }
 
@@ -330,27 +402,38 @@ import { onMounted } from 'vue';
     }
 
     function recordAudio() {
-      var device = navigator.mediaDevices.getUserMedia({ audio: true });
-      device.then((stream) => {
-        // use this!
+    //   var device = navigator.mediaDevices.getUserMedia({ audio: true });
+    //   device.then((stream) => {
+    //     // use this!
+    //     this.recorder = new MediaRecorder(stream);
+    //     mediaRecorder.start();
+    //     const audioChunks = [];
+    //     this.recorder.ondataavailable = (e) => {
+    //         audioChunks.push(e.data);
+    //     };
+
+    //     mediaRecorder.addEventListener("stop", () => {
+    //         const audioBlob = new Blob(audioChunks);
+    //         const audioUrl = URL.createObjectURL(audioBlob);
+    //         const audio = new Audio(audioUrl);
+    //         audio.play();
+    // });
+
+    //     setTimeout(() => {
+    //     mediaRecorder.stop();
+    //     }, 10000);
+    //   });
+
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
         this.recorder = new MediaRecorder(stream);
-        mediaRecorder.start();
-        const audioChunks = [];
-        this.recorder.ondataavailable = (e) => {
-            audioChunks.push(e.data);
-        };
-
-        mediaRecorder.addEventListener("stop", () => {
-            const audioBlob = new Blob(audioChunks);
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            audio.play();
-    });
-
-        setTimeout(() => {
-        mediaRecorder.stop();
-        }, 10000);
-      });
+        this.recorder.start();
+        this.recorder.stop();
+        const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioUrl = URL.createObjectURL(blobObj);
+        const audio = new Audio(audioUrl);
+        audio.play();
+        })
     }
     function getRepeatSentenceIndex(){
         axios.get(route('practice.repeatSentence.Index')).then(function(res){

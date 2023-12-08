@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('repeat_sentences', function (Blueprint $table) {
+        Schema::create('bookmarkables', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('duration');
-            $table->text('audio_path');
+            $table->unsignedBigInteger('bookmarkable_id');
+            $table->string('bookmarkable_type');
+            $table->unsignedBigInteger('bookmark_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('repeat_sentences');
+        Schema::dropIfExists('bookmarks');
     }
 };

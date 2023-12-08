@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answer_short_questions', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('audio_path');
-            $table->integer('duration');
-            $table->string('code');
+            $table->unsignedBigInteger('practice_id');
+            $table->foreign('practice_id')->references('id')->on('practices')
+                ->onDelete('cascade');
+            $table->text('question');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answer_short_questions');
+        Schema::dropIfExists('questions');
     }
 };

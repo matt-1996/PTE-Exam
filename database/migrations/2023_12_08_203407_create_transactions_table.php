@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subscription_id');
+            $table->foreign('subscription_id')->references('id')
+                ->on('subscriptions')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->boolean('is_paid')->default(false);
+            $table->decimal('price',10,2);
             $table->timestamps();
         });
     }

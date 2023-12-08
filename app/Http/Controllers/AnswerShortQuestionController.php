@@ -3,23 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\AnswerShortQuestion;
+use App\Models\Practice;
 use Inertia\Inertia;
 class AnswerShortQuestionController extends Controller
 {
     public function index()
     {
-        $answerShortQuestion = AnswerShortQuestion::paginate(15);
+        $answerShortQuestion = Practice::where('type', 'ASQ')->paginate(15);
 
         return response()->json(['message' => $answerShortQuestion]);
     }
 
     public function show($id)
     {
-        $answerShortQuestion = AnswerShortQuestion::findOrFail($id);
+        $answerShortQuestion = Practice::findOrFail($id);
+
+        $files = $answerShortQuestion->files;
 
         return Inertia::render('practice/speaking/answerShortQuestion', [
-            'answerShortQuestion' => $answerShortQuestion
+            'answerShortQuestion' => $answerShortQuestion,
+            'files' => $files
         ]);
     }
 }

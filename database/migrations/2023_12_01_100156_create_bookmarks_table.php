@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('practice_id');
+            $table->foreign('practice_id')->references('id')->on('practices')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('topic_id');
-            $table->foreign('topic_id')->references('id')->on('topics')->onDelete('cascade');
+            $table->enum('type',['very_easy', 'easy','good','hard','very_hard']);
             $table->timestamps();
         });
     }

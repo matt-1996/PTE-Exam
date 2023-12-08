@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('summarize_written_texts', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('context');
-            $table->integer('duration');
-            $table->string('code', 100);
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->decimal('price',10,2);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('summarize_written_texts');
+        Schema::dropIfExists('subscriptions');
     }
 };

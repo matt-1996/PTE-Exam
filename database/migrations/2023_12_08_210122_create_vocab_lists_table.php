@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('vocabs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->text('body');
-            $table->enum('type' , ['ANSWER', 'OPTION']);
+            $table->string('vocab');
+            $table->string('translation');
+            $table->unsignedBigInteger('dictionary_id');
+            $table->foreign('dictionary_id')->references('id')->on('dictionaries')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('vocab_lists');
     }
 };

@@ -7,6 +7,8 @@ use App\Http\Controllers\ReTellLectureController;
 use App\Http\Controllers\DescribeImageController;
 use App\Models\DescribeImage;
 use App\Models\AnswerShortQuestion;
+use App\Http\Controllers\writing\summarizeWtittenTextController;
+use App\Http\Controllers\writing\writeEssayController;
 
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
@@ -27,3 +29,11 @@ Route::get('re-tell-lectures', [ReTellLectureController::class, 'index'])->name(
 Route::get('answer-short-question/{id}', [AnswerShortQuestionController::class, 'show'])->name('practice.answerShortQuestion.show');
 
 Route::get('answer-short-questions', [AnswerShortQuestionController::class, 'index'])->name('practice.answerShortQuestion.index');
+
+Route::get('summariza-writen-text/{id}', [summarizeWtittenTextController::class , 'show'])->name('practice.summarizeWrittenText.show');
+
+Route::get('summariza-writen-texts', [summarizeWtittenTextController::class , 'index'])->name('practice.summarizeWrittenText.index');
+
+Route::get('write-essay/{id}', [writeEssayController::class, 'show'])->name('practice.writeEssays.show');
+
+Route::get('write-essays', [writeEssayController::class, 'index'])->name('practice.writeEssays.index');

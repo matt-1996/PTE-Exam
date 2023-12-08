@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('practices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('topic_id');
-            $table->string('model');
+            $table->string('title');
+            $table->integer('duration');
+            $table->string('code' , 100);
+            $table->enum('type',['read_aoud','repeat_sentence','describe_image',
+                're_tell_lecture', 'asq', 'swt', 'write_essay', 'RW_FIB','reading_multiple_choice',
+                're_order_paragraph', 'R_FIB', 'MCS','SPT','LMC', 'L_FIB','HCS','L_MCS','SMW','HIW','WFD']);
+            $table->text('context')->nullable();
+            $table->text('explanation')->nullable();
             $table->timestamps();
         });
     }

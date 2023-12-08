@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('quizes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('duration');
             $table->boolean('is_active')->default(true);
-            $table->unsignedBigInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->unsignedBigInteger('quize_collection_id');
             $table->timestamps();
         });
     }

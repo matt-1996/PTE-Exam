@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vocab_lists', function (Blueprint $table) {
+        Schema::create('dictionaries', function (Blueprint $table) {
             $table->id();
-            $table->string('vocab');
+            $table->string('title');
+            $table->string('lang');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vocab_lists');
+        Schema::dropIfExists('dictionaries');
     }
 };
