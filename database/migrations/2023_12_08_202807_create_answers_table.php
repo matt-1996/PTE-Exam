@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('practice_id');
             $table->foreign('practice_id')->references('id')->on('practices')
                   ->onDelete('cascade');
-            $table->unsignedBigInteger('question_id');
+            $table->unsignedBigInteger('question_id')->nullable();
             $table->foreign('question_id')->references('id')->on('questions')
                     ->onDelete('cascade');
             $table->text('answer');

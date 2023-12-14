@@ -125,7 +125,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.r_mcm.show' , '12')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Multiple Choice</div>
                     </Link>
                 </li>
@@ -140,7 +140,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.r_mcs.show' , '13')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Multiple Choice (Single)</div>
                     </Link>
                 </li>
@@ -175,7 +175,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_smw.show' , '16')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Select Missing Word</div>
                     </Link>
                 </li>
