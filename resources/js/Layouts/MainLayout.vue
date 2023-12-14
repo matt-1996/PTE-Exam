@@ -155,7 +155,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_mcm.show' , '14')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Multiple Choice</div>
                     </Link>
                 </li>
@@ -170,7 +170,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_mcs.show' , '15')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Multiple Choice (Single)</div>
                     </Link>
                 </li>
