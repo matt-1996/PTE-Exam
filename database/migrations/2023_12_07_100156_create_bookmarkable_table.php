@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('bookmarkable_type');
             $table->unsignedBigInteger('bookmark_id');
             $table->unsignedBigInteger('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

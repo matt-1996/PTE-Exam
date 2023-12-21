@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('practice_id')->references('id')->on('practices')
                 ->onDelete('cascade');
             $table->text('question');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

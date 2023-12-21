@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('paragraphs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->decimal('price',10,2);
+            $table->unsignedBigInteger('practice_id');
+            $table->foreign('practice_id')->references('id')->on('practices')->onDelete('cascade');
+            $table->text('paragraph');
+            $table->integer('order');
+            $table->integer('answer_order');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('paragraphs');
+
     }
 };

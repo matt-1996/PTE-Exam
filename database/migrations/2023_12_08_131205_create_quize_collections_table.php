@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('quize_collections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('practice_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

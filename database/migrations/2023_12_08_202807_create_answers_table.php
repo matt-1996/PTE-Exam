@@ -21,6 +21,7 @@ return new class extends Migration
                     ->onDelete('cascade');
             $table->text('answer');
             $table->boolean('is_correct');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

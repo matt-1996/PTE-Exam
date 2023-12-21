@@ -21,6 +21,7 @@ return new class extends Migration
                 're_order_paragraph', 'R_FIB', 'MCS','SPT','LMC', 'L_FIB','HCS','L_MCS','SMW','HIW','WFD']);
             $table->text('context')->nullable();
             $table->text('explanation')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

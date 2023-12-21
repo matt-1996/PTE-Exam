@@ -13,8 +13,11 @@ use App\Http\Controllers\writing\summarizeWtittenTextController;
 use App\Http\Controllers\writing\writeEssayController;
 use App\Http\Controllers\Listening\MultipleChoiceController as l_mcm;
 use App\Http\Controllers\Listening\MultipleChoiceSingleController as l_mcs;
+use App\Http\Controllers\Listening\ReOrderParagraphsController;
 use App\Http\Controllers\Listening\SMWController;
-
+use App\Http\Controllers\Listening\SSTController;
+use App\Http\Controllers\Listening\WFDController;
+use Inertia\Inertia;
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
 Route::get('read_aloud_index' , [ReadAloudController::class,'index'])->name('practice.readAloud.Index');
@@ -62,3 +65,21 @@ Route::get('l_mcs/{id}', [l_mcs::class, 'show'])->name('practice.l_mcs.show');
 Route::get('l_smw', [SMWController::class, 'index'])->name('practice.l_smw.index');
 
 Route::get('l_smw/{id}', [SMWController::class, 'show'])->name('practice.l_smw.show');
+
+Route::get('l_sst', [SSTController::class, 'index'])->name('practice.l_sst.index');
+
+Route::get('l_sst/{id}', [SSTController::class, 'show'])->name('practice.l_sst.show');
+
+Route::get('l_wfd', [WFDController::class, 'index'])->name('practice.l_wfd.index');
+
+Route::get('l_wfd/{id}', [WFDController::class, 'show'])->name('practice.l_wfd.show');
+
+Route::get('l_ro', [ReOrderParagraphsController::class, 'index'])->name('practice.l_rop.index');
+
+Route::get('l_ro/{id}', [ReOrderParagraphsController::class, 'show'])->name('practice.l_rop.show');
+
+Route::get('drag', function(){
+
+    return Inertia::render('drag');
+
+});

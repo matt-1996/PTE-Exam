@@ -21,6 +21,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->boolean('is_paid')->default(false);
             $table->decimal('price',10,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

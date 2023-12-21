@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('dictionary_id');
             $table->foreign('dictionary_id')->references('id')->on('dictionaries')
                 ->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

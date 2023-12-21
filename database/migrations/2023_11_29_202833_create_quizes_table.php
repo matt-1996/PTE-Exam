@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('duration');
             $table->boolean('is_active')->default(true);
             $table->unsignedBigInteger('quize_collection_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

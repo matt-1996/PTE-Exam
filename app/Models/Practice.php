@@ -25,4 +25,9 @@ class Practice extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function paragraphs()
+    {
+        return $this->hasMany(Paragraph::class);
+    }
 }
