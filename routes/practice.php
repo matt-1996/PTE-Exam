@@ -5,6 +5,7 @@ use App\Http\Controllers\ReadAloudController;
 use App\Http\Controllers\RepeatSentenceController;
 use App\Http\Controllers\ReTellLectureController;
 use App\Http\Controllers\DescribeImageController;
+use App\Http\Controllers\Listening\HCSController;
 use App\Http\Controllers\Reading\MultipleChoiceController;
 use App\Http\Controllers\Reading\MultipleChoiceSingleController;
 use App\Models\DescribeImage;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Listening\ReOrderParagraphsController;
 use App\Http\Controllers\Listening\SMWController;
 use App\Http\Controllers\Listening\SSTController;
 use App\Http\Controllers\Listening\WFDController;
+use App\Http\Controllers\Reading\FIBController;
 use Inertia\Inertia;
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
@@ -56,6 +58,10 @@ Route::get('r_mcs/{id}', [MultipleChoiceSingleController::class, 'show'])->name(
 
 Route::get('l_mcm', [l_mcm::class, 'index'])->name('practice.l_mcm.index');
 
+Route::get('r_fib', [FIBController::class, 'index'])->name('practice.r_fib.index');
+
+Route::get('r_fib/{id}', [FIBController::class, 'show'])->name('practice.r_fib.show');
+
 Route::get('l_mcm/{id}', [l_mcm::class, 'show'])->name('practice.l_mcm.show');
 
 Route::get('l_mcs', [l_mcs::class, 'index'])->name('practice.l_mcs.index');
@@ -77,6 +83,14 @@ Route::get('l_wfd/{id}', [WFDController::class, 'show'])->name('practice.l_wfd.s
 Route::get('l_ro', [ReOrderParagraphsController::class, 'index'])->name('practice.l_rop.index');
 
 Route::get('l_ro/{id}', [ReOrderParagraphsController::class, 'show'])->name('practice.l_rop.show');
+
+Route::get('l_hcs', [HCSController::class, 'index'])->name('practice.l_hcs.index');
+
+Route::get('l_hcs/{id}', [HCSController::class, 'show'])->name('practice.l_hcs.show');
+
+Route::get('fib_t', function(){
+    return Inertia::render('fib');
+});
 
 Route::get('drag', function(){
 

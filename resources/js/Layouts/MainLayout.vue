@@ -120,7 +120,7 @@
             <ul>
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Reading</span>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_fib.show' , '21')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Reading & Writing: fill in the blanks</div>
                     </Link>
                 </li>
@@ -130,7 +130,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_rop.show' , '19')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Re-order Paragraphs</div>
                     </Link>
                 </li>
