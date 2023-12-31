@@ -120,7 +120,7 @@
             <ul>
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Reading</span>
                 <li>
-                    <Link :href="route('practice.r_fib.show' , '21')" class="block p-3  ">
+                    <Link :href="route('practice.rw_fib.show' , '21')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Reading & Writing: fill in the blanks</div>
                     </Link>
                 </li>
@@ -135,7 +135,7 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.r_fib.show' , '22')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Reading: fill in the blanks</div>
                     </Link>
                 </li>
@@ -148,7 +148,7 @@
             <ul>
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Listening</span>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_sst.show' , '17')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Summarize Spoken Text
                             <span class="font-semibold text-xs text-red-400"> AI Score</span>
                         </div>
@@ -160,12 +160,12 @@
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_fib.show' , '23')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Fill in the blanks</div>
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" class="block p-3  ">
+                    <Link :href="route('practice.l_hcs.show' , '20')" class="block p-3  ">
                         <div class="text-sm text-gray-500">Highlight Correct Summary</div>
                     </Link>
                 </li>

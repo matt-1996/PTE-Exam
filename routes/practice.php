@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AnswerShortQuestionController;
 use App\Http\Controllers\ReadAloudController;
+use App\Http\Controllers\Listening\LFIBController;
+use App\Http\Controllers\Reading\RFIBController;
 use App\Http\Controllers\RepeatSentenceController;
 use App\Http\Controllers\ReTellLectureController;
 use App\Http\Controllers\DescribeImageController;
@@ -18,7 +20,7 @@ use App\Http\Controllers\Listening\ReOrderParagraphsController;
 use App\Http\Controllers\Listening\SMWController;
 use App\Http\Controllers\Listening\SSTController;
 use App\Http\Controllers\Listening\WFDController;
-use App\Http\Controllers\Reading\FIBController;
+use App\Http\Controllers\Reading\RWFIBController;
 use Inertia\Inertia;
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
@@ -58,9 +60,9 @@ Route::get('r_mcs/{id}', [MultipleChoiceSingleController::class, 'show'])->name(
 
 Route::get('l_mcm', [l_mcm::class, 'index'])->name('practice.l_mcm.index');
 
-Route::get('r_fib', [FIBController::class, 'index'])->name('practice.r_fib.index');
+Route::get('rw_fib', [RWFIBController::class, 'index'])->name('practice.rw_fib.index');
 
-Route::get('r_fib/{id}', [FIBController::class, 'show'])->name('practice.r_fib.show');
+Route::get('rw_fib/{id}', [RWFIBController::class, 'show'])->name('practice.rw_fib.show');
 
 Route::get('l_mcm/{id}', [l_mcm::class, 'show'])->name('practice.l_mcm.show');
 
@@ -88,8 +90,16 @@ Route::get('l_hcs', [HCSController::class, 'index'])->name('practice.l_hcs.index
 
 Route::get('l_hcs/{id}', [HCSController::class, 'show'])->name('practice.l_hcs.show');
 
-Route::get('fib_t', function(){
-    return Inertia::render('fib');
+Route::get('r_fib', [RFIBController::class, 'index'])->name('practice.r_fib.index');
+
+Route::get('r_fib/{id}', [RFIBController::class, 'show'])->name('practice.r_fib.show');
+
+Route::get('l_fib', [LFIBController::class, 'index'])->name('practice.l_fib.index');
+
+Route::get('l_fib/{id}', [LFIBController::class, 'show'])->name('practice.l_fib.show');
+
+Route::get('hiw_t', function(){
+    return Inertia::render('practice/listening/hiw');
 });
 
 Route::get('drag', function(){

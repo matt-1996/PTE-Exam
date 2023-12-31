@@ -1,7 +1,7 @@
 <template>
     <MainLayout>
         <v-container>
-        <Drawer :datas="Fibs" :links="links" title="Reading & Writing：Fill in the blanks" routeName="practice.r_fib.show" :image="image" />
+        <Drawer :datas="Fibs" :links="links" title="Reading & Writing：Fill in the blanks" routeName="practice.rw_fib.show" :image="image" />
         <v-row class="mt-2" justify="center" align="center" offset-md="1">
                 <v-col cols="3">
                     <div class="">
@@ -90,7 +90,7 @@ const drawer = ref(false)
 const submited = ref(false)
 const disableState = ref(true)
 const publicPath = ref('../../../../../')
-const image = ref(publicPath.value + '/images/fib_r_v2.png')
+const image = ref(publicPath.value + 'images/fib_r_v2.png')
 
 defineProps({fib: Object})
 
@@ -103,7 +103,7 @@ and recycling efforts are steps in the right direction, but a more comprehensive
 [collectively] reduce our dependence on fossil fuels, promote renewable energy sources, and adopt sustainable practices in agriculture and manufacturing.`)
 
 function getFibsIndex(){
-        axios.get(route('practice.r_fib.index')).then(function(res){
+        axios.get(route('practice.rw_fib.index')).then(function(res){
             Fibs.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
