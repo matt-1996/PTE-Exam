@@ -1,5 +1,19 @@
 <template>
     <MainLayout title="questions">
+        <v-snackbar
+      v-model="snackbar"
+    >
+      Times up
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
         <v-container>
             <v-navigation-drawer
             class="overflow-y-auto pl-10"

@@ -1,5 +1,19 @@
 <template>
     <MainLayout title="questions">
+        <v-snackbar
+      v-model="snackbar"
+    >
+      Times up
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
         <v-container>
 
             <Drawer :datas="retellLectures" :links="links" title="Re-tell Lecture" :image="image" routeName="practice.retellLecture.show" />

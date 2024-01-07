@@ -61,7 +61,6 @@ var voiceRecorder = {
                audioRecorder.stop();
                var audio = new Audio('../../../../../sounds/beep.wav');
                audio.play();
-               snackbar.value = true
               console.log('Recording stopped! Click on the play button to play the recorded audio.')
 
               setTimeout(() => {
