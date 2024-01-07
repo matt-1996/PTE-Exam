@@ -1,13 +1,13 @@
 let data = "data"
 let audioRecorder;
 let audioChunks = [];
-let stopButton = document.getElementById("stopButton")
 var voiceRecorder = {
 
     record(timeToRecord,progressWidth,snackbar,AudioUrl,showAudioPlayer){
-        console.log(data)
-        const myData = "mydata"
-        const TimetoRecordinMiliSecond = timeToRecord * 1000
+      const stopButton = document.getElementById('stop')
+        console.log(document.getElementById("stop"))
+        console.log(stopButton)
+        let TimetoRecordinMiliSecond = timeToRecord * 1000
         const TimetoPlayinMiliSecond = TimetoRecordinMiliSecond + 1000
 
       navigator.mediaDevices.getUserMedia({ audio: true })
@@ -37,7 +37,7 @@ var voiceRecorder = {
             setTimeout(() => {
                 audioRecorder.stop();
                 var audio = new Audio('../../../../../sounds/beep.wav');
-                audio.play();
+               //  audio.play();
                 snackbar.value = true
                console.log('Recording stopped! Click on the play button to play the recorded audio.')
             }, TimetoRecordinMiliSecond );
@@ -46,7 +46,7 @@ var voiceRecorder = {
                 const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
                const audioUr = URL.createObjectURL(blobObj);
                const audio = new Audio(audioUr);
-            //    audio.play();
+               audio.play();
                console.log('Playing the recorded audio!');
                console.log(audioUr)
                AudioUrl.value = audioUr
@@ -55,11 +55,24 @@ var voiceRecorder = {
 
             //stop recording when the stop button is clicked
             stopButton.addEventListener('click', () => {
-                audioRecorder.stop();
-                var audio = new Audio('../../../../../sounds/beep.wav');
-                audio.play();
-                snackbar.value = true
-               console.log('Recording stopped! Click on the play button to play the recorded audio.')
+               console.log(TimetoRecordinMiliSecond)
+               TimetoRecordinMiliSecond = 1000
+               audioRecorder.stop();
+               var audio = new Audio('../../../../../sounds/beep.wav');
+               audio.play();
+               snackbar.value = true
+              console.log('Recording stopped! Click on the play button to play the recorded audio.')
+
+              setTimeout(() => {
+               const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+              const audioUr = URL.createObjectURL(blobObj);
+              const audio = new Audio(audioUr);
+           //    audio.play();
+              console.log('Playing the recorded audio!');
+              console.log(audioUr)
+              AudioUrl.value = audioUr
+              showAudioPlayer.value = true
+           }, 1000);
             });
 
             // play the recorded audio when the play button is clicked

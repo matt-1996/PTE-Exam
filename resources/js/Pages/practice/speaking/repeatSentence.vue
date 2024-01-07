@@ -252,11 +252,11 @@
                 </v-col>
             </v-row>
             <v-row>
-                <vue-countdown v-if="prepare" :time=" 1 * repeatSentence.duration * 1000" v-slot="{ minutes,seconds }" @end="onPrepareEnd(repeatSentence.duration)">
+                <vue-countdown v-if="prepare" :time=" 1 * repeatSentence.duration * 1000" v-slot="{ minutes,seconds }" @end="onPrepareEnd(practiceDuration)">
                     <div class="text-red-400">Prepare: 0{{ minutes }}:{{ seconds }}</div>
                 </vue-countdown>
 
-                <vue-countdown v-if="timer" :time=" 1 * repeatSentence.duration * 1000" v-slot="{ minutes,seconds }" @end="onTimeEnd">
+                <vue-countdown v-if="timer" :time=" 1 * practiceDuration * 1000" v-slot="{ minutes,seconds }" @end="onTimeEnd">
                     <div class="text-black">Time: 0{{ minutes }}:{{ seconds }}</div>
                 </vue-countdown>
             </v-row>
@@ -286,12 +286,31 @@
             </v-row>
             <v-row justify="center" align="center">
                 <v-col>
-                    <div class="bg-gray-200 opacity-75 p-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-blue-600 h-2.5 rounded-full" :style="{width:   progressWidth / practiceDuration * 100  + '%' }"></div>
+                    </div>
+                    <div v-if="prepare" class="bg-gray-200 opacity-75 p-4 cursor-pointer"  @click="repeatSentence.duration = 0; practiceDuration = 20">
                         <div class="text-center">
                             Click to Start
                         </div>
                         <div class="text-center mt-2">
-                            <v-icon @click="record(repeatSentence.duration)" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                            <v-icon class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                        </div>
+                    </div>
+                    <div v-show="timer && practiceDuration != 0" id="stop" class="bg-gray-200 opacity-75 p-4 cursor-pointer" @click="practiceDuration = 0">
+                        <div class="text-center">
+                            Click to End
+                        </div>
+                        <div class="text-center mt-2">
+                            <v-icon color="red" class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
+                        </div>
+                    </div>
+                    <div v-if="practiceDuration == 0" class="bg-gray-200 opacity-75 p-4 cursor-pointer">
+                        <div class="text-center">
+                            Done
+                        </div>
+                        <div class="text-center mt-2">
+                            <v-icon class="bg-gray-400 rounded-full p-6">mdi-microphone</v-icon>
                         </div>
                     </div>
                 </v-col>
@@ -303,7 +322,7 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
-// import {InertiaLink} from "@inertiajs/inertia-vue3";
+import voiceRecorder from '../../../Lib/recorder'
 import { ref } from 'vue'
 import { onMounted } from 'vue';
 
@@ -373,20 +392,25 @@ import { onMounted } from 'vue';
     const dropDownPracticeToggle = ref(false)
     const dropDownToggle = ref(false)
     const RepeatSentences = ref(0);
+    const progressWidth = ref(1)
+    const snackbar = ref(false)
+
     const links = ref(0)
     const AudioUrl = ref()
     const showAudioPlayer = ref(false)
     const publicPath = ref('../../../../../')
-    defineProps({ repeatSentence : Object , files: Object})
+    
+    const props = defineProps({ repeatSentence : Object , files: Object})
+    const practiceDuration = ref(props.repeatSentence.duration)
 
-    function onPrepareEnd(timeToRecord)
+    function onPrepareEnd(seconds)
     {
         console.log("Counter Ended")
         prepare.value = false
         timer.value = true
         var audio = new Audio('../../../../../sounds/beep.wav');
         audio.play();
-        record(timeToRecord)
+        voiceRecorder.record(seconds,progressWidth,snackbar,AudioUrl,showAudioPlayer)
 
     }
 
@@ -398,41 +422,6 @@ import { onMounted } from 'vue';
             drawer.value = true
             links.value = res.data.message.links
             console.log(links)
-        })
-    }
-
-    function recordAudio() {
-    //   var device = navigator.mediaDevices.getUserMedia({ audio: true });
-    //   device.then((stream) => {
-    //     // use this!
-    //     this.recorder = new MediaRecorder(stream);
-    //     mediaRecorder.start();
-    //     const audioChunks = [];
-    //     this.recorder.ondataavailable = (e) => {
-    //         audioChunks.push(e.data);
-    //     };
-
-    //     mediaRecorder.addEventListener("stop", () => {
-    //         const audioBlob = new Blob(audioChunks);
-    //         const audioUrl = URL.createObjectURL(audioBlob);
-    //         const audio = new Audio(audioUrl);
-    //         audio.play();
-    // });
-
-    //     setTimeout(() => {
-    //     mediaRecorder.stop();
-    //     }, 10000);
-    //   });
-
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-        this.recorder = new MediaRecorder(stream);
-        this.recorder.start();
-        this.recorder.stop();
-        const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(blobObj);
-        const audio = new Audio(audioUrl);
-        audio.play();
         })
     }
     function getRepeatSentenceIndex(){

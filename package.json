@@ -23,6 +23,7 @@
     "dependencies": {
         "@chenfengyuan/vue-countdown": "^2.1.2",
         "@mdi/font": "^7.3.67",
+        "vuedraggable": "^4.1.0",
         "vuetify": "^3.4.4"
     }
 }

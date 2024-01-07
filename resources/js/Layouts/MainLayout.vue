@@ -26,7 +26,7 @@
 
 
 <nav class="bg-white border-b border-b-gray-300 ">
-    <div class="flex align-middle flex-wrap items-center mx-auto max-w-screen-xl p-4">
+    <div class="flex align-middle flex-wrap items-center mx-auto max-w-screen-xl p-4 ">
         <!-- <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse"> -->
             <img src="../../../public/images/header_logo.d5a605ec.png" class="h-12 pt-3" alt="" />
             <!-- <span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span> -->
@@ -43,7 +43,7 @@
                     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  " aria-current="page">Home</a>
                 </li>
                 <li>
-                    <button @click="megaMenu = !megaMenu" id="mega-menu-full-dropdown-button" data-collapse-toggle="mega-menu-full-dropdown" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#29d2bf] md:p-0  ">PTE Practice <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <button @mouseover="megaMenu = !megaMenu" id="mega-menu-full-dropdown-button" data-collapse-toggle="mega-menu-full-dropdown" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-[#29d2bf] md:p-0  ">PTE Practice <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
   </svg></button>
                 </li>
@@ -59,7 +59,7 @@
             </ul>
         </div>
     </div>
-    <div v-if="megaMenu" id="mega-menu-full-dropdown" class="mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y ">
+    <div v-if="megaMenu" @mouseover="megaMenu = true" @mouseout="megaMenu = false" id="mega-menu-full-dropdown" class="mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y mt-2 absolute top-20 left-28">
         <div class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-5 ">
             <ul>
                 <span class="border-b-2 ml-5 text-lg text-black border-[#29d2bf]">Speaking</span>
@@ -230,7 +230,7 @@
 </nav>
 
 
-      <v-main class="bg-white">
+      <v-main class="bg-[#fafafa]">
         <slot />
       </v-main>
       <footer>
