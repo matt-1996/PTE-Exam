@@ -3,7 +3,7 @@ let audioRecorder;
 let audioChunks = [];
 var voiceRecorder = {
 
-    record(timeToRecord,progressWidth,snackbar,AudioUrl,showAudioPlayer){
+    record(timeToRecord,progressWidth,snackbar,AudioUrl,showAudioPlayer,practiceDuration){
       const stopButton = document.getElementById('stop')
         console.log(document.getElementById("stop"))
         console.log(stopButton)
@@ -38,6 +38,7 @@ var voiceRecorder = {
                 audioRecorder.stop();
                 var audio = new Audio('../../../../../sounds/beep.wav');
                //  audio.play();
+               practiceDuration.value = 0
                 snackbar.value = true
                console.log('Recording stopped! Click on the play button to play the recorded audio.')
             }, TimetoRecordinMiliSecond );
@@ -46,7 +47,7 @@ var voiceRecorder = {
                 const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
                const audioUr = URL.createObjectURL(blobObj);
                const audio = new Audio(audioUr);
-               audio.play();
+               // audio.play();
                console.log('Playing the recorded audio!');
                console.log(audioUr)
                AudioUrl.value = audioUr

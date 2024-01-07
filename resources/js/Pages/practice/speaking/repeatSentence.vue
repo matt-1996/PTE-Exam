@@ -410,7 +410,7 @@ import { onMounted } from 'vue';
         timer.value = true
         var audio = new Audio('../../../../../sounds/beep.wav');
         audio.play();
-        voiceRecorder.record(seconds,progressWidth,snackbar,AudioUrl,showAudioPlayer)
+        voiceRecorder.record(seconds,progressWidth,snackbar,AudioUrl,showAudioPlayer,practiceDuration)
 
     }
 
