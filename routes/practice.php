@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnswerShortQuestionController;
+use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ReadAloudController;
 use App\Http\Controllers\Listening\LFIBController;
 use App\Http\Controllers\Reading\RFIBController;
@@ -22,6 +23,9 @@ use App\Http\Controllers\Listening\SSTController;
 use App\Http\Controllers\Listening\WFDController;
 use App\Http\Controllers\Reading\RWFIBController;
 use Inertia\Inertia;
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::post("add-to-bookmark/{id}/{color}", [BookmarkController::class, 'create'])->name('bookmark.add');
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
 Route::get('read_aloud_index' , [ReadAloudController::class,'index'])->name('practice.readAloud.Index');
@@ -97,6 +101,8 @@ Route::get('r_fib/{id}', [RFIBController::class, 'show'])->name('practice.r_fib.
 Route::get('l_fib', [LFIBController::class, 'index'])->name('practice.l_fib.index');
 
 Route::get('l_fib/{id}', [LFIBController::class, 'show'])->name('practice.l_fib.show');
+
+});
 
 Route::get('hiw_t', function(){
     return Inertia::render('practice/listening/hiw');

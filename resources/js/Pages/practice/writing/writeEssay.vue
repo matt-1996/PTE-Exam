@@ -20,11 +20,31 @@
                 <v-divider inset thickness="1" class="border-opacity-100 border-gray-200"></v-divider>
             </v-row>
             <v-row>
-                <v-col>
+                <v-col cols="12" sm="10">
                     <div class="py-10">
                         <span>
                             {{ writeEssay.title }}
                         </span>
+                    </div>
+                </v-col>
+                <v-col cols="12" sm="2">
+                    <div class="" @click="showBookmarkList = !showBookmarkList">
+                    <div class="mt-7 ml-15" >
+                        <v-icon  :color="userBookmarksColor || 'gray'" size="30" :class="{userBookmarksColor : 'text-gray-500'}">mdi-bookmark</v-icon>
+                    </div>
+                </div>
+
+                        <div v-if="showBookmarkList" @mouseover="showBookmarkList = true" class="mr-32 w-32 shadow-2xl drop-shadow-xl">
+                            <div class="p-2 absolute top-0 right-2 z-10 bg-white" >
+                                <div class="flex py-2 hover:bg-black cursor-pointer" v-for="bookamrk in bookamrks">
+                                    <div class="">
+                                        <v-icon size="30" :color="bookamrk.color">{{ bookamrk.icon }}</v-icon>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500" @click="bookmark(writeEssay.id,bookamrk.color)">{{ bookamrk.title }}</p>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </v-col>
             </v-row>
@@ -80,9 +100,27 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
-import { ref } from 'vue'
+import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3'
+const page = usePage()
+const userBookmarks = computed(() => page.props?.bookmarks)
+const userBookmarksColor = computed(() => page.props.bookmarks?.color)
+const showBookmarkList = ref(false)
+    const bookamrks = reactive([
+        {title:"orange", icon:'mdi-bookmark' , color:'orange'},
+        {title:"red", icon:'mdi-bookmark' , color:'red'},
+        {title:"green", icon:'mdi-bookmark' , color:'green'},
+        {title:"purple", icon:'mdi-bookmark' , color:'purple'},
+        {title:"unmark", icon:"mdi-bookmark", color:"gray"}
+    ])
 
+    function bookmark(id,color){
+        axios.post(route('bookmark.add',{'id' : id, 'color':color}))
+            .then(function(){
+                location.reload();
+            })
+    }
 
     const prepare = ref(true)
     const timer = ref(false)

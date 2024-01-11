@@ -15,9 +15,10 @@ return new class extends Migration
             /*  Decide Whether Admin should be on another Project Or Not  */
             $table->id();
             $table->string('name');
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
-            $table->string('mobile')->unique();
-            $table->enum('gender' , ['MALE', 'FEMALE', 'OTHER']);
+            $table->string('mobile')->unique()->nullable();
+            $table->enum('gender' , ['MALE', 'FEMALE', 'OTHER'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

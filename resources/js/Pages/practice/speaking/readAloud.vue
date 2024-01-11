@@ -33,7 +33,7 @@
                 </v-col>
                 <v-divider inset thickness="1" class="border-opacity-100 border-gray-200"></v-divider>
             </v-row>
-            <v-row>
+            <v-row cols="12" sm="10">
                 <v-col cols="9">
                     <div class="py-10">
                         <span>
@@ -41,21 +41,21 @@
                         </span>
                     </div>
                 </v-col>
-                <v-col>
-                    <div class="" @mouseover="showBookmarkList = true" @mouseout="showBookmarkList = false">
+                <v-col cols="12" sm="2">
+                    <div class="" @click="showBookmarkList = !showBookmarkList">
                     <div class="mt-7 ml-15" >
-                        <v-icon  color="" size="30" class="text-gray-200 ">mdi-bookmark</v-icon>
+                        <v-icon  :color="userBookmarksColor || 'gray'" size="30" :class="{userBookmarksColor : 'text-gray-500'}">mdi-bookmark</v-icon>
                     </div>
                 </div>
 
-                        <div v-if="showBookmarkList" @mouseover="showBookmarkList = true" @mouseout="showBookmarkList = false" class="mr-32 w-32 shadow-2xl drop-shadow-xl">
+                        <div v-if="showBookmarkList" @mouseover="showBookmarkList = true" class="mr-32 w-32 shadow-2xl drop-shadow-xl">
                             <div class="p-2 absolute top-0 right-2 z-10 bg-white" >
                                 <div class="flex py-2 hover:bg-black cursor-pointer" v-for="bookamrk in bookamrks">
                                     <div class="">
                                         <v-icon size="30" :color="bookamrk.color">{{ bookamrk.icon }}</v-icon>
                                     </div>
                                     <div>
-                                        <p class="text-gray-500" @click="console.log('clicked')">{{ bookamrk.title }}</p>
+                                        <p class="text-gray-500" @click="bookmark(reading.id,bookamrk.color)">{{ bookamrk.title }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn>Submit</v-btn>
+                    <!-- <v-btn>Submit</v-btn> -->
                 </v-col>
             </v-row>
         </v-container>
@@ -142,8 +142,12 @@ import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue'
 import voiceRecorder from '../../../Lib/recorder'
 // import {InertiaLink} from "@inertiajs/inertia-vue3";
-import { ref,reactive,watch } from 'vue'
+import { ref,reactive,watch,computed } from 'vue'
 import { onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3'
+const page = usePage()
+const userBookmarks = computed(() => page.props?.bookmarks)
+const userBookmarksColor = computed(() => page.props.bookmarks?.color)
 // import { reactive } from 'node_modules_old/@vue/reactivity/dist/reactivity';
 
 
@@ -157,17 +161,20 @@ import { onMounted } from 'vue';
     const selectedBookmark = ref()
     // const audioRecorder = ref()
     const progressWidth = ref(1)
+
+
     const AudioUrl = ref()
     const showAudioPlayer = ref(false)
     const snackbar = ref(false)
     // const audioChunks = reactive([])
-    const showBookmarkList = ref(false)
     const publicPath = ref('../../../../../')
+    const showBookmarkList = ref(false)
     const bookamrks = reactive([
         {title:"orange", icon:'mdi-bookmark' , color:'orange'},
         {title:"red", icon:'mdi-bookmark' , color:'red'},
         {title:"green", icon:'mdi-bookmark' , color:'green'},
-        {title:"purple", icon:'mdi-bookmark' , color:'purple'}
+        {title:"purple", icon:'mdi-bookmark' , color:'purple'},
+        {title:"unmark", icon:"mdi-bookmark", color:"gray"}
     ])
     const image = ref(publicPath.value + '/images/ra_s_ai.png')
     // const stopButtone = ref(stopButton)
@@ -178,6 +185,13 @@ import { onMounted } from 'vue';
     function getSelected(title)
     {
         console.log(title)
+    }
+
+    function bookmark(id,color){
+        axios.post(route('bookmark.add',{'id' : id, 'color':color}))
+            .then(function(){
+                location.reload();
+            })
     }
 
    function recorder(timeToRecord,progressWidth,snackbar,AudioUrl,showAudioPlayer){

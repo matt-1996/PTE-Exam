@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('type',['very_easy', 'easy','good','hard','very_hard']);
+            $table->string('color',100)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

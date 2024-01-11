@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'bookmarks' => auth()->user()?->bookmarks->where('practice_id',$request->route('id'))->first(),
         ];
     }
 }

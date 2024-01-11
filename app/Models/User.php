@@ -60,7 +60,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function read_alouds()
+    public function bookmarks()
     {
         return $this->hasMany(Bookmark::class);
     }

@@ -10,6 +10,13 @@ class Bookmark extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "color",
+        "type",
+        "user_id",
+        "practice_id"
+    ] ;
+
     public function read_alouds(): MorphToMany
     {
         return $this->morphedByMany(Reading::class, 'bookmarkable');

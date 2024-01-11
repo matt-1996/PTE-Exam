@@ -11,7 +11,7 @@ class RepeatSentenceController extends Controller
 
     public function index()
     {
-        $repeatSentences = Practice::where('type','repeat_sentence')->paginate(2);
+        $repeatSentences = Practice::where('type','repeat_sentence')->paginate(12);
 
         return response()->json(['message' => $repeatSentences]);
     }

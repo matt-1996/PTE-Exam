@@ -13,7 +13,7 @@ class ReadAloudController extends Controller
 
     public function index()
     {
-        $readAlouds = Practice::where('type','read_aloud')->paginate(2);
+        $readAlouds = Practice::where('type','read_aloud')->paginate(12);
 
         return response()->json(['message' => $readAlouds]);
     }
