@@ -60,7 +60,9 @@
             <div v-if="user" class="relative hidden sm:inline-flex md:inline-flex lg:inline-flex items-center justify-center ml-96 w-10 h-10 overflow-hidden rounded-full"
                 :class="bg_color"
             >
+            <Link :href="route('dashboard.settings.view')">
                 <span class="font-medium text-gray-600">{{ user.name.charAt(0) + user.last_name.charAt(0) }}</span>
+            </Link>
             </div>
         </div>
     </div>
