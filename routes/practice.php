@@ -24,8 +24,10 @@ use App\Http\Controllers\Listening\SSTController;
 use App\Http\Controllers\Listening\WFDController;
 use App\Http\Controllers\Reading\RWFIBController;
 use Inertia\Inertia;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['middleware' => ['auth']], function () {
+
+Route::group(['middleware' => ['auth',CacheResponse::class]], function () {
     Route::post("add-to-bookmark/{id}/{color}", [BookmarkController::class, 'create'])->name('bookmark.add');
 Route::get('read_alouds/{id}', [ReadAloudController::class,'show'])->name('prctice.readAloud');
 
