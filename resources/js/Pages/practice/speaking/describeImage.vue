@@ -116,6 +116,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== DescribeImage.id">
+                        <Link :href="route('practice.DescribeImage.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.DescribeImage.show' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -123,7 +160,10 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3'
 import Drawer from '../../../Components/Drawer.vue'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import voiceRecorder from '../../../Lib/recorder'
 import { ref } from 'vue'
 import { onMounted,computed,reactive } from 'vue';
@@ -154,6 +194,12 @@ const userBookmarksColor = computed(() => page.props.bookmarks?.color)
         {title:"purple", icon:'mdi-bookmark' , color:'purple'},
         {title:"unmark", icon:"mdi-bookmark", color:"gray"}
     ])
+
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.DescribeImage.id)
+
 
 
     function bookmark(id,color){
@@ -194,7 +240,8 @@ const userBookmarksColor = computed(() => page.props.bookmarks?.color)
             DescribeImages.value = res.data.message.data
             drawer.value = true
             links.value = res.data.message.links
-            console.log(DescribeImages)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, DescribeImages)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , DescribeImages)
         })
     }
     onMounted(() => {

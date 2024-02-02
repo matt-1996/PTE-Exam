@@ -96,6 +96,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== mcm.id">
+                        <Link :href="route('practice.l_mcm.show' , previousPracticeId ?? mcm.id)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.l_mcm.show' , nextPracticeId ?? mcm.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -104,7 +141,9 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
-
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
+import { Link } from '@inertiajs/vue3'
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
 
@@ -115,7 +154,7 @@ const timer = ref(false)
 const drawer = ref(false)
 const submited = ref(false)
 const disableState = ref(true)
-const publicPath = ref('../../../../../')
+const publicPath = ref('../../../../..')
 const image = ref(publicPath.value + '/images/mcm_r_v2.png')
 import { usePage } from '@inertiajs/vue3'
 const page = usePage()
@@ -138,14 +177,20 @@ const showBookmarkList = ref(false)
             })
     }
 
-defineProps({mcm: Object, files: Object, answers: Object})
+const props = defineProps({mcm: Object, files: Object, answers: Object})
+
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.mcm.id)
 
 function getMcmsIndex(){
         axios.get(route('practice.l_mcm.index')).then(function(res){
             Mcms.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(Mcms)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, Mcms)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , Mcms)
         })
     }
 

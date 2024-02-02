@@ -118,6 +118,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== retellLecture.id">
+                        <Link :href="route('practice.retellLecture.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.retellLecture.show' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -125,6 +162,9 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import Drawer from '../../../Components/Drawer.vue'
 import voiceRecorder from '../../../Lib/recorder'
 import { ref,reactive,computed } from 'vue'
@@ -133,6 +173,12 @@ import { usePage } from '@inertiajs/vue3'
 const page = usePage()
 const userBookmarks = computed(() => page.props?.bookmarks)
 const userBookmarksColor = computed(() => page.props.bookmarks?.color)
+const props = defineProps({ retellLecture : Object , files: Object})
+
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.retellLecture.id)
 
 const showBookmarkList = ref(false)
     const bookamrks = reactive([
@@ -164,7 +210,8 @@ const showBookmarkList = ref(false)
     const progressWidth = ref(1)
     const snackbar = ref(false)
     const image = ref(publicPath.value + '/images/rl_s_ai.png')
-    const props = defineProps({ retellLecture : Object , files: Object})
+
+    
 
     const practiceDuration = ref(props.retellLecture.duration)
 
@@ -196,7 +243,8 @@ const showBookmarkList = ref(false)
             retellLectures.value = res.data.message.data
             drawer.value = true
             links.value = res.data.message.links
-            console.log(retellLectures)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, retellLectures)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , retellLectures)
         })
     }
     onMounted(() => {

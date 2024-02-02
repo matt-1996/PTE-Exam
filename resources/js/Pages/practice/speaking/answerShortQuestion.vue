@@ -118,6 +118,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== answerShortQuestion.id">
+                        <Link :href="route('practice.answerShortQuestion.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.answerShortQuestion.show' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -127,6 +164,9 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
 import voiceRecorder from '../../../Lib/recorder'
+import { Link } from '@inertiajs/vue3'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import { ref,reactive } from 'vue'
 import { onMounted,computed } from 'vue';
 import { usePage } from '@inertiajs/vue3'
@@ -157,6 +197,11 @@ const userBookmarks = computed(() => page.props?.bookmarks)
         {title:"purple", icon:'mdi-bookmark' , color:'purple'},
         {title:"unmark", icon:"mdi-bookmark", color:"gray"}
     ])
+
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.answerShortQuestion.id)
 
     function bookmark(id,color){
         axios.post(route('bookmark.add',{'id' : id, 'color':color}))
@@ -193,7 +238,8 @@ const userBookmarks = computed(() => page.props?.bookmarks)
             answerShortQuestions.value = res.data.message.data
             drawer.value = true
             links.value = res.data.message.links
-            console.log(answerShortQuestions)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, answerShortQuestions)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , answerShortQuestions)
         })
     }
     onMounted(() => {

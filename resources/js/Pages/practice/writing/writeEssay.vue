@@ -92,6 +92,43 @@
                     </div> -->
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== writeEssays.id">
+                        <Link :href="route('practice.writeEssays.show' , previousPracticeId ?? writeEssay.id)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.writeEssays.show' , nextPracticeId ?? writeEssay.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -99,6 +136,9 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import Drawer from '../../../Components/Drawer.vue';
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
@@ -131,7 +171,12 @@ const showBookmarkList = ref(false)
     const links = ref(0)
     const publicPath = ref('../../../../../../')
     const image = ref(publicPath.value + '/images/we_w_ai.png')
-    defineProps({ writeEssay : Object })
+    const props = defineProps({ writeEssay : Object })
+
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.writeEssay.id)
 
     function onPrepareEnd()
     {
@@ -159,7 +204,8 @@ const showBookmarkList = ref(false)
             writeEssays.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(writeEssays)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, writeEssays)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , writeEssays)
         })
     }
     onMounted(() => {

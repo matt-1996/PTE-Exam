@@ -79,6 +79,43 @@
                         <span v-for="ans in answers" :key="ans.id">{{ ans.order }}, </span>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== rop.id">
+                        <Link :href="route('practice.l_rop.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.l_rop.show' , nextPracticeId ?? rop.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -87,6 +124,9 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
+import { Link } from '@inertiajs/vue3'
 import draggable from 'vuedraggable';
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
@@ -120,10 +160,15 @@ const drawer = ref(false)
 const submited = ref(false)
 const radios = ref(null)
 const disableState = ref(true)
-const publicPath = ref('../../../../../')
+const publicPath = ref('../../../../..')
 const image = ref(publicPath.value + '/images/ro_r_v2.png')
 
 const props = defineProps({rop: Object, paragraphs: Object, answers: Object})
+
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.rop.id)
 
 const originalParagraphs = ref(props.paragraphs)
 
@@ -190,7 +235,8 @@ function getRopsIndex(){
             Rops.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            // console.log(Rops)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, Rops)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , Rops)
         })
     }
 

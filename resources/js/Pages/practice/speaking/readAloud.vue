@@ -15,7 +15,7 @@
       </template>
     </v-snackbar>
         <v-container class="z-50">
-
+            <h1>{{ page.props.csrf_token }}</h1>
             <Drawer :datas="ReadAlouds" :links="links" :image="image" title="Read Aloud" routeName='prctice.readAloud' />
             <v-row class="mt-2" justify="center" align="center" offset-md="1">
                 <v-col cols="3">
@@ -124,6 +124,33 @@
                 <v-col>
                     <!-- <v-btn>Submit</v-btn> -->
                 </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== reading.id">
+                        <Link :href="route('prctice.readAloud' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('prctice.readAloud' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
             </v-row>
         </v-container>
     </MainLayout>
@@ -139,10 +166,14 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import { router } from '@inertiajs/vue3'
 import Drawer from '../../../Components/Drawer.vue'
 import voiceRecorder from '../../../Lib/recorder'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 // import {InertiaLink} from "@inertiajs/inertia-vue3";
 import { ref,reactive,watch,computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
 import { onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3'
 const page = usePage()
@@ -157,10 +188,15 @@ const userBookmarksColor = computed(() => page.props.bookmarks?.color)
     const dropDownPracticeToggle = ref(false)
     const dropDownToggle = ref(false)
     const ReadAlouds = ref(0);
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
     const links = ref(0)
     const selectedBookmark = ref()
     // const audioRecorder = ref()
     const progressWidth = ref(1)
+
+    const next = ref(0);
 
 
     const AudioUrl = ref()
@@ -181,6 +217,8 @@ const userBookmarksColor = computed(() => page.props.bookmarks?.color)
     const props = defineProps({ reading: Object })
 
     const practiceDuration = ref(props.reading.duration)
+
+    const currentPage = ref(props.reading.id)
 
     function getSelected(title)
     {
@@ -315,9 +353,14 @@ const userBookmarksColor = computed(() => page.props.bookmarks?.color)
             ReadAlouds.value = res.data.message.data
             drawer.value = true
             links.value = res.data.message.links
-            console.log(ReadAlouds)
+            // console.log(ReadAlouds)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, ReadAlouds)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , ReadAlouds)
+            // console.log(previousPracticeId.value)
         })
     }
+
+    
     onMounted(() => {
         getReadAloudIndex()
     });

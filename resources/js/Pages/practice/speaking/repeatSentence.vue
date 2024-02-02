@@ -125,6 +125,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== 0">
+                        <Link :href="route('practice.repeat.sentence.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.repeat.sentence.show' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -132,8 +169,12 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import Drawer from '../../../Components/Drawer.vue'
+import { Link } from '@inertiajs/vue3'
+
 import axios from 'axios';
 import voiceRecorder from '../../../Lib/recorder'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import { ref,computed,reactive } from 'vue'
 import { onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3'
@@ -165,6 +206,7 @@ const showBookmarkList = ref(false)
     const RepeatSentences = ref(0);
     const progressWidth = ref(1)
     const snackbar = ref(false)
+    const props = defineProps({ repeatSentence : Object , files: Object})
 
     const links = ref(0)
     const AudioUrl = ref()
@@ -172,8 +214,13 @@ const showBookmarkList = ref(false)
     const publicPath = ref('../../../../../')
     const image = ref(publicPath.value + '/images/rs_s_ai.png')
 
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.repeatSentence.id)
+
+
     
-    const props = defineProps({ repeatSentence : Object , files: Object})
     const practiceDuration = ref(props.repeatSentence.duration)
 
     function onPrepareEnd(seconds)
@@ -192,7 +239,8 @@ const showBookmarkList = ref(false)
             RepeatSentences.value = res.data.message.data
             drawer.value = true
             links.value = res.data.message.links
-            console.log(RepeatSentences)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, RepeatSentences)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , RepeatSentences)
         })
     }
     onMounted(() => {

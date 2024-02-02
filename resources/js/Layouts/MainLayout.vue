@@ -31,13 +31,20 @@
             <img src="../../../public/images/header_logo.d5a605ec.png" class="h-12 pt-3" alt="" />
             <!-- <span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span> -->
         <!-- </a> -->
+        <!-- <div v-if="user" class="absolute sm:inline-flex mt-5 md:hidden lg:hidden text-center items-center justify-center right-1/4 w-10 top-4 h-10 overflow-hidden rounded-full"
+                :class="bg_color"
+            >
+            <Link :href="route('dashboard.settings.view')" class="text-center">
+                <span class="font-medium text-gray-600">{{ user.name.charAt(0) + user.last_name.charAt(0) }}</span>
+            </Link>
+            </div> -->
         <button data-collapse-toggle="mega-menu-full" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 " aria-controls="mega-menu-full" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <svg class="w-5 h-5" @click="showMobileMegaMenu = ! showMobileMegaMenu" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
             </svg>
         </button>
-        <div id="mega-menu-full" class="items-center justify-between font-medium hidden w-full md:flex md:w-auto md:order-1">
+        <div id="mega-menu-full" v-if="showMobileMegaMenu" class="items-center justify-between font-medium w-full md:flex md:w-auto md:order-1">
             <ul class="flex flex-col p-4 md:p-0 mt-4  rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white md ">
                 <li>
                     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  " aria-current="page">Home</a>
@@ -50,14 +57,19 @@
                 <li>
                     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  ">Course</a>
                 </li>
-                <li>
+                <li class="sm:inline-flex md:hidden lg:hidden">
+                    <Link :href="route('dashboard.settings.view')" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  ">
+                        Dashboard
+                    </Link>
+                </li>
+                <!-- <li>
                     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  ">Circle</a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#29d2bf] md:p-0  ">APP</a>
-                </li>
+                </li> -->
             </ul>
-            <div v-if="user" class="relative hidden sm:inline-flex md:inline-flex lg:inline-flex items-center justify-center ml-96 w-10 h-10 overflow-hidden rounded-full"
+            <div v-if="user" class="absolute hidden sm:inline-flex md:inline-flex lg:inline-flex items-center justify-center ml-96 right-1/4 w-10 h-10 overflow-hidden rounded-full"
                 :class="bg_color"
             >
             <Link :href="route('dashboard.settings.view')">
@@ -205,21 +217,21 @@
                         <div class="text-sm text-gray-500">Vocab Books</div>
                     </Link>
                 </li>
-                <li>
+                <!-- <li>
                     <Link href="#" class="block p-3  ">
                         <div class="text-sm text-gray-500">Shadowing</div>
                     </Link>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <Link href="#" class="block p-3  ">
                         <div class="text-sm text-gray-500">AI Score Report Analysis</div>
                     </Link>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <Link href="#" class="block p-3  ">
                         <div class="text-sm text-gray-500">AI Study Plan</div>
                     </Link>
-                </li>
+                </li> -->
                 <li>
                     <Link href="#" class="block p-3  ">
                         <div class="text-sm text-gray-500">Mock Tests</div>
@@ -384,6 +396,8 @@
   import { computed } from 'vue'
   import { usePage } from '@inertiajs/vue3'
 
+  const showMobileMegaMenu = ref(true)
+  const showDesktopMegaMenu = ref(true)
 const page = usePage()
 
 const user = computed(() => page.props.auth?.user)

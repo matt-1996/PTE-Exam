@@ -78,8 +78,45 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
+                <!-- <v-col>
                     <v-btn @click="submited = true">Submit</v-btn>
+                </v-col> -->
+            </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== sst.id">
+                        <Link :href="route('practice.l_sst.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.l_sst.show' , nextPracticeId ?? sst.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn @click="submited = true" color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
                 </v-col>
             </v-row>
 
@@ -91,6 +128,9 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
+import { Link } from '@inertiajs/vue3'
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3'
@@ -122,17 +162,23 @@ const drawer = ref(false)
 const submited = ref(false)
 const radios = ref(null)
 const disableState = ref(true)
-const publicPath = ref('../../../../../')
+const publicPath = ref('../../../../..')
 const image = ref(publicPath.value + '/images/sst_l_ai.png')
 
-defineProps({sst: Object, files: Object})
+const props = defineProps({sst: Object, files: Object})
+
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.sst.id)
 
 function getSstsIndex(){
         axios.get(route('practice.l_sst.index')).then(function(res){
             Ssts.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(Ssts)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, Ssts)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , Ssts)
         })
     }
 

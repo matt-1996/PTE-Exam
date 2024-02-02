@@ -96,6 +96,43 @@
                         </v-radio-group>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== mcs.id">
+                        <Link :href="route('practice.r_mcs.show' , previousPracticeId ?? mcs.id)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.r_mcs.show' , nextPracticeId ?? mcs.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -103,6 +140,9 @@
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
+import { Link } from '@inertiajs/vue3'
 import Drawer from '../../../Components/Drawer.vue';
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
@@ -138,14 +178,20 @@ const radios = ref(null)
 const publicPath = ref('../../../../../')
 const image = ref(publicPath.value + '/images/mcs_r_v2.png')
 
-defineProps({mcs: Object, files: Object, answers: Object})
+const props = defineProps({mcs: Object, files: Object, answers: Object})
+
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.mcs.id)
 
 function getMcsesIndex(){
         axios.get(route('practice.r_mcs.index')).then(function(res){
             Mcses.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(Mcses)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, Mcses)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , Mcses)
         })
     }
 

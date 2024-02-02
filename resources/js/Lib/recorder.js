@@ -1,6 +1,8 @@
+
 let data = "data"
 let audioRecorder;
 let audioChunks = [];
+
 var voiceRecorder = {
 
     record(timeToRecord,progressWidth,snackbar,AudioUrl,showAudioPlayer,practiceDuration){
@@ -44,12 +46,33 @@ var voiceRecorder = {
             }, TimetoRecordinMiliSecond );
 
             setTimeout(() => {
-                const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+                const blobObj = new Blob(audioChunks, { type: 'audio/ogg' });
                const audioUr = URL.createObjectURL(blobObj);
                const audio = new Audio(audioUr);
+
+               let file = new File([blobObj], 'recording.ogg');
+
+               const data = {
+               "user" : "test",
+               };
+
+               const formData = new FormData();
+               formData.append('files.file', file);
+               formData.append('data', JSON.stringify(data));
+
+               // console.log(formData)
+
+               axios({
+                  method: "post",
+                  url: "http://localhost:8000/api/recordings",
+                  data: formData,
+                  headers: {
+                    "content-type": `multipart/form-data`,
+                  }
+                })
                // audio.play();
-               console.log('Playing the recorded audio!');
-               console.log(audioUr)
+               // console.log('Playing the recorded audio!');
+               // console.log(audioUr)
                AudioUrl.value = audioUr
                showAudioPlayer.value = true
             }, TimetoPlayinMiliSecond);
@@ -64,15 +87,37 @@ var voiceRecorder = {
               console.log('Recording stopped! Click on the play button to play the recorded audio.')
 
               setTimeout(() => {
-               const blobObj = new Blob(audioChunks, { type: 'audio/webm' });
+               const blobObj = new Blob(audioChunks, { type: 'audio/ogg' });
               const audioUr = URL.createObjectURL(blobObj);
               const audio = new Audio(audioUr);
+              let file = new File([blobObj], 'recording.ogg');
+
+               const data = {
+               "user" : "test",
+               };
+
+               const formData = new FormData();
+               formData.append('files.file', file);
+               formData.append('data', JSON.stringify(data));
+
+               // console.log(formData)
+
+               axios({
+                  method: "post",
+                  url: "http://localhost:8000/api/recordings",
+                  data: formData,
+                  headers: {
+                    "content-type": `multipart/form-data`,
+                  }
+                })
            //    audio.play();
               console.log('Playing the recorded audio!');
               console.log(audioUr)
               AudioUrl.value = audioUr
               showAudioPlayer.value = true
            }, 1000);
+
+           throw new Error("my error message");
             });
 
             // play the recorded audio when the play button is clicked

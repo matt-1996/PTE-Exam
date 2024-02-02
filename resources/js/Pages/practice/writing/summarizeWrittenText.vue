@@ -1,7 +1,7 @@
 <template>
     <MainLayout title="questions">
         <v-container>
-            <Drawer :datas="summarizeWrittenText" :links="links" title="Summarize Written Text" routeName="practice.summarizeWrittenText.show" :image="image" />
+            <Drawer :datas="summarizeWrittenTexts" :links="links" title="Summarize Written Text" routeName="practice.summarizeWrittenText.show" :image="image" />
 
             <v-row class="mt-2" justify="center" align="center" offset-md="1">
                 <v-col cols="3">
@@ -92,6 +92,43 @@
                     </div> -->
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== summarizeWrittenText.id">
+                        <Link :href="route('practice.summarizeWrittenText.show' , previousPracticeId)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.summarizeWrittenText.show' , nextPracticeId)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -101,6 +138,9 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
 import { ref,reactive,computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
 import { onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3'
 const page = usePage()
@@ -132,7 +172,12 @@ const showBookmarkList = ref(false)
     const links = ref(0)
     const publicPath = ref('../../../../../../')
     const image = ref(publicPath.value + '/images/swt_w_ai.png')
-    defineProps({ summarizeWrittenText : Object })
+    const props = defineProps({ summarizeWrittenText : Object })
+
+    const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.summarizeWrittenText.id)
 
     function onPrepareEnd()
     {
@@ -157,10 +202,12 @@ const showBookmarkList = ref(false)
 
     function getSummarizeWrittenTextIndex(){
         axios.get(route('practice.summarizeWrittenText.index')).then(function(res){
-            summarizeWrittenTexts.value = res.data.message.data
+            summarizeWrittenTexts.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(summarizeWrittenTexts)
+            console.log(res.data.message)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, summarizeWrittenTexts)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , summarizeWrittenTexts)
         })
     }
     onMounted(() => {

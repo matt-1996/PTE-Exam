@@ -102,6 +102,43 @@
                     </div>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <p class="text-black">AI Scoring and Audio Answer Download is available after submission.</p>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <!-- <v-btn>Submit</v-btn> -->
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="previousPracticeId !== fib.id">
+                        <Link :href="route('practice.l_fib.show' , previousPracticeId ?? fib.id)">
+                            <v-btn >
+                                Previous
+                            </v-btn>
+                        </Link>
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div v-if="nextPracticeId !== 0">
+                        <Link :href="route('practice.l_fib.show' , nextPracticeId ?? fib.id)">
+                        <v-btn color="#29d2bf" class="text-white">
+                            Next
+                        </v-btn>
+                    </Link>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row no-gutters>
+                <v-col>
+                    <div>
+                        <v-btn color="#29d2bf" class="text-white" >
+                            Submit
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-row>
         </v-container>
     </MainLayout>
 </template>
@@ -110,6 +147,9 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import fillInTheBlank from '../../../Components/fillInTheBlank.vue'
 import { reactive,onMounted,ref,computed } from 'vue';
+import nextPractice from '../../../Lib/nextPractice';
+import previousPractice from '../../../Lib/previosPractice';
+import { Link } from '@inertiajs/vue3'
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
 import { usePage } from '@inertiajs/vue3'
@@ -143,8 +183,12 @@ const disableState = ref(true)
 const publicPath = ref('../../../../../')
 const image = ref(publicPath.value + 'images/fib_l_v2.png')
 
-defineProps({fib: Object,files:Object})
+const props = defineProps({fib: Object,files:Object})
 
+const practiceArray = reactive([])
+    const nextPracticeId = ref(0)
+    const previousPracticeId = ref(0)
+    const currentPage = ref(props.fib.id)
 
 const sentence = ref(`In today's fast-paced world, our [indiffrence]
 to the environment is a pressing concern. The relentless exploitation of natural resources,[esclating]
@@ -158,7 +202,8 @@ function getFibsIndex(){
             Fibs.value = res.data.message
             drawer.value = true
             links.value = res.data.message.links
-            console.log(Fibs)
+            nextPracticeId.value = nextPractice(currentPage, practiceArray, Fibs)
+            previousPracticeId.value = previousPractice(currentPage, practiceArray , Fibs)
         })
     }
 

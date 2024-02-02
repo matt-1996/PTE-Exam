@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnswerShortQuestionController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ReadAloudController;
 use App\Http\Controllers\Listening\LFIBController;
 use App\Http\Controllers\Reading\RFIBController;
@@ -102,12 +103,19 @@ Route::get('l_fib', [LFIBController::class, 'index'])->name('practice.l_fib.inde
 
 Route::get('l_fib/{id}', [LFIBController::class, 'show'])->name('practice.l_fib.show');
 
+
+
 });
+
+
 
 Route::get('hiw_t', function(){
-    return Inertia::render('practice/listening/hiw');
+    return Inertia::render('api/listening/hiw');
 });
 
+Route::get('fib_test' , function(){
+    return Inertia::render('fibPage');
+});
 Route::get('drag', function(){
 
     return Inertia::render('drag');
