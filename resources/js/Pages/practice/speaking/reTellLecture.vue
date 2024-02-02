@@ -73,13 +73,19 @@
                 </vue-countdown>
             </v-row>
             <v-row>
-                <v-col>
-                    <div v-for="file in files" :key="file.id">
+                <v-col cols="5">
+                    <audio-player
+                        ref="audioPlayer"
+                        :audio-list="audioList.map(elm => elm.url)"
+                        :before-play="handleBeforePlay"
+                        theme-color="#ff2929"
+                        />
+                    <!-- <div v-for="file in files" :key="file.id">
                         <audio controls >
                             <source :src="publicPath + file.audio_path" type="audio/mpeg">
                             Your browser does not support the audio element.
                             </audio>
-                        </div>
+                        </div> -->
                 </v-col>
             </v-row>
             <v-row>
@@ -169,6 +175,7 @@ import Drawer from '../../../Components/Drawer.vue'
 import voiceRecorder from '../../../Lib/recorder'
 import { ref,reactive,computed } from 'vue'
 import { onMounted } from 'vue';
+import AudioPlayer from '@liripeng/vue-audio-player'
 import { usePage } from '@inertiajs/vue3'
 const page = usePage()
 const userBookmarks = computed(() => page.props?.bookmarks)
@@ -210,6 +217,13 @@ const showBookmarkList = ref(false)
     const progressWidth = ref(1)
     const snackbar = ref(false)
     const image = ref(publicPath.value + '/images/rl_s_ai.png')
+
+    const audioList = ref([
+        {
+          name: 'audio1',
+          url:  props.files[0].audio_path
+        }
+      ])
 
     
 

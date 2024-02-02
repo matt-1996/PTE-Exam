@@ -57,14 +57,19 @@
                 </vue-countdown>
             </v-row>
             <v-row>
-                <v-col>
-                    <div v-for="file in files" :key="file.id">
+                <v-col cols="5">
+                    <audio-player
+                        ref="audioPlayer"
+                        :audio-list="audioList.map(elm => elm.url)"
+                        :before-play="handleBeforePlay"
+                        theme-color="#ff2929"
+                        />
+                    <!-- <div v-for="file in files" :key="file.id">
                         <audio controls >
-                            <!-- <source src="horse.ogg" type="audio/ogg"> -->
-                            <source :src="publicPath + file.audio_path" type="audio/mpeg">
+]                            <source :src="publicPath + file.audio_path" type="audio/mpeg">
                             Your browser does not support the audio element.
                             </audio>
-                    </div>
+                    </div> -->
                 </v-col>
             </v-row>
             <v-row v-if="!submited">
@@ -148,6 +153,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 import Drawer from '../../../Components/Drawer.vue';
 import nextPractice from '../../../Lib/nextPractice';
+import AudioPlayer from '@liripeng/vue-audio-player'
 import previousPractice from '../../../Lib/previosPractice';
 import { Link } from '@inertiajs/vue3'
 import { ref,reactive,computed } from 'vue'
@@ -185,6 +191,13 @@ const publicPath = ref('../../../../..')
 const image = ref(publicPath.value + '/images/smw_l_v2.png')
 
 const props = defineProps({smw: Object, files: Object, answers: Object})
+
+const audioList = ref([
+        {
+          name: 'audio1',
+          url:  props.files[0].audio_path
+        }
+      ])
 
 const practiceArray = reactive([])
     const nextPracticeId = ref(0)

@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "@chenfengyuan/vue-countdown": "^2.1.2",
+        "@liripeng/vue-audio-player": "^1.5.3",
         "@mdi/font": "^7.3.67",
         "vuedraggable": "^4.1.0",
         "vuetify": "^3.4.4"

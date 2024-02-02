@@ -77,14 +77,20 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col>
+                <v-col cols="5">
                     <!-- <source src="horse.ogg" type="audio/ogg"> -->
-                    <div v-for="file in files" :key="file.id">
+                    <audio-player
+                        ref="audioPlayer"
+                        :audio-list="audioList.map(elm => elm.url)"
+                        :before-play="handleBeforePlay"
+                        theme-color="#ff2929"
+                        />
+                    <!-- <div v-for="file in files" :key="file.id">
                         <audio controls >
                             <source :src="publicPath + file.audio_path" type="audio/mpeg">
                             Your browser does not support the audio element.
                             </audio>
-                        </div>
+                        </div> -->
                 </v-col>
             </v-row>
             <v-row>
@@ -170,7 +176,7 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import Drawer from '../../../Components/Drawer.vue'
 import { Link } from '@inertiajs/vue3'
-
+import AudioPlayer from '@liripeng/vue-audio-player'
 import axios from 'axios';
 import voiceRecorder from '../../../Lib/recorder'
 import nextPractice from '../../../Lib/nextPractice';
@@ -191,13 +197,14 @@ const showBookmarkList = ref(false)
         {title:"unmark", icon:"mdi-bookmark", color:"gray"}
     ])
 
+    
     function bookmark(id,color){
         axios.post(route('bookmark.add',{'id' : id, 'color':color}))
-            .then(function(){
-                location.reload();
-            })
+        .then(function(){
+            location.reload();
+        })
     }
-
+    
     const prepare = ref(true)
     const timer = ref(false)
     const drawer = ref(false)
@@ -207,12 +214,18 @@ const showBookmarkList = ref(false)
     const progressWidth = ref(1)
     const snackbar = ref(false)
     const props = defineProps({ repeatSentence : Object , files: Object})
-
+    
     const links = ref(0)
-    const AudioUrl = ref()
-    const showAudioPlayer = ref(false)
     const publicPath = ref('../../../../../')
     const image = ref(publicPath.value + '/images/rs_s_ai.png')
+    const audioList = ref([
+        {
+          name: 'audio1',
+          url:  props.files[0].audio_path
+        }
+      ])
+    const AudioUrl = ref()
+    const showAudioPlayer = ref(false)
 
     const practiceArray = reactive([])
     const nextPracticeId = ref(0)
